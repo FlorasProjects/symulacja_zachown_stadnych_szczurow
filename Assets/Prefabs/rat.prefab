@@ -118,10 +118,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a5da093b44c9f54fa69e77cc8277657, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ratPrefab: {fileID: 1172804712985602807}
-  numberOfRats: 5
-  radius: 20
   checkFrequency: 1
-  checkRadius: 4
+  checkRadius: 2
   ratRotation: {x: 0, y: 0, z: 0}
-  rotationSpeed: 5
+  rotationSpeed: 3

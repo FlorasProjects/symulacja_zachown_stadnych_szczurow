@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using static UnityEditor.PlayerSettings;
 
-public class addRats : MonoBehaviour
+public class AddRats : MonoBehaviour
 {
     public GameObject ratPrefab;
     public int numberOfRats;
@@ -13,14 +13,14 @@ public class addRats : MonoBehaviour
 
     void Start()
     {
-        CircleSpawn();
+        RandomSpawn();
     }
     public void RandomSpawn()
     {
         for (int i = 0; i < numberOfRats; i++)
         {
-            Vector3 pos = transform.position + new Vector3(Random.Range(-5.0f, 5.0f), 0f, Random.Range(-5.0f, 5.0f));
-            Quaternion rot = Quaternion.Euler(0, Random.Range(-30.0f, 30.0f), 0);
+            Vector3 pos = transform.position + new Vector3(Random.Range(-5.0f, 5.0f), 0.25f, Random.Range(-5.0f, 5.0f));
+            Quaternion rot = Quaternion.Euler(0, Random.Range(-30.0f, 30.0f), 0f);
             var rat = Instantiate(ratPrefab, pos, rot, transform);
             Debug.Log(rat);
             ratList.Add(rat);

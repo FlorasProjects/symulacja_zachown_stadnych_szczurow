@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.UIElements;
 using static UnityEngine.GraphicsBuffer;
 
-public class ratMovement : MonoBehaviour
+public class RatMovement : MonoBehaviour
 {
     public float checkFrequency;
     public float checkRadius;
@@ -23,8 +23,11 @@ public class ratMovement : MonoBehaviour
     {
         UpdateNearbyRats(nearRats);
 
-        transform.rotation = Quaternion.Slerp( BoidSeparation(), transform.rotation, rotationSpeed * Time.deltaTime);
-      //  transform.position += transform.forward * Time.deltaTime;
+        if(nearRats.Count > 0 )
+        {
+            transform.position += BoidSeparation().normalized * Time.deltaTime * rotationSpeed;
+        }
+        
     }
    
     private void UpdateNearbyRats(ArrayList nearRats)
@@ -33,26 +36,32 @@ public class ratMovement : MonoBehaviour
         for (int i = 0; i < transform.parent.childCount; i++)
         {
             Transform rat = transform.parent.GetChild(i);
-            if(rat.position.x - transform.position.x < checkRadius ||
-               rat.position.y - transform.position.y < checkRadius ||
-               rat.position.z - transform.position.z < checkRadius)
+            
+            if (Mathf.Abs(rat.position.x - transform.position.x) < checkRadius &&
+               Mathf.Abs(rat.position.y - transform.position.y) < checkRadius &&
+               Mathf.Abs(rat.position.z - transform.position.z) < checkRadius)
             {
-                if(rat.position != transform.position)
+                
+                if (rat.transform != this.transform)
                 {
                     nearRats.Add(rat);
-                }  
+                }
             }
         }
+        Debug.Log(nearRats.Count);
     }
-    private Quaternion BoidSeparation()
+    private Vector3 BoidSeparation()
     {
-        Quaternion resultingQuaternion = Quaternion.identity;
+        Vector3 resultingVector = transform.position;
         foreach (Transform rat in nearRats)
         {
-            resultingQuaternion *= Quaternion.Inverse(rat.transform.rotation);
+            resultingVector -= rat.position;
         }
-
-        return resultingQuaternion;
+        resultingVector.y = 0.25f;
+        return resultingVector;
     }
+    private void Boidalignment()
+    {
 
+    }
 }
