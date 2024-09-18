@@ -14,6 +14,7 @@ public class AddRats : MonoBehaviour
     void Start()
     {
         RandomSpawn();
+        //CircleSpawn();
     }
     public void RandomSpawn()
     {
