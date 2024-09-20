@@ -1,8 +1,6 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
-using static UnityEditor.PlayerSettings;
+
 
 public class AddRats : MonoBehaviour
 {
@@ -20,8 +18,8 @@ public class AddRats : MonoBehaviour
     {
         for (int i = 0; i < numberOfRats; i++)
         {
-            Vector3 pos = transform.position + new Vector3(Random.Range(-5.0f, 5.0f), 0.25f, Random.Range(-5.0f, 5.0f));
-            Quaternion rot = Quaternion.Euler(0, Random.Range(-30.0f, 30.0f), 0f);
+            Vector3 pos = transform.position + new Vector3(Random.Range(-1 * radius, radius), 0.25f, Random.Range(-1 * radius, radius));
+            Quaternion rot = Quaternion.Euler(0, Random.Range(-180.0f, 180.0f), 0f);
             var rat = Instantiate(ratPrefab, pos, rot, transform);
             Debug.Log(rat);
             ratList.Add(rat);

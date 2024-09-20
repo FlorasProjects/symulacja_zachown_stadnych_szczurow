@@ -22,14 +22,16 @@ public class RatMovement : MonoBehaviour
     void Update()
     {
         UpdateNearbyRats(nearRats);
-
-         if(nearRats.Count > 0 )
+        Debug.DrawRay(transform.position, BoidSeparation(), Color.red);
+       // Debug.DrawRay(transform.position, new Vector3(0f, BoidSeparation(), 0f), Color.red);
+        if (nearRats.Count > 0)
          {
-             transform.position += movementSpeed * Time.deltaTime * transform.forward;
-             transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.Euler(0f, BoidSeparation(), 0f), rotationSpeed);
+            transform.position += movementSpeed * Time.deltaTime * transform.forward;
+            Vector3 lookVector = BoidSeparation();
+            transform.LookAt(lookVector);
             //transform.LookAt(BoidSeparation());
-
-        }
+           //transform.rotation *=  Quaternion.Euler(0f, BoidSeparation(), 0f);
+         }
         //Debug.Log(BoidAlignment());
         // transform.rotation *= Quaternion.Slerp(Quaternion.identity,  Quaternion.Euler(BoidSeparation().normalized), rotationSpeed * Time.deltaTime);
         //Quaternion.Euler(0f, BoidSeparation(), 0f);
@@ -54,16 +56,15 @@ public class RatMovement : MonoBehaviour
             }
         }
     }
-    private float BoidSeparation()
+    private Vector3 BoidSeparation()
     {
-        Vector3 resultingVector = transform.position;
+        Vector3 tempVector = transform.position;
         foreach (Transform rat in nearRats)
         {
-            resultingVector -= rat.position;
+            tempVector += transform.position - rat.position;
         }
-        
-        resultingVector.y = 0f;
-        return Vector3.Angle(new Vector3(transform.forward.x, 0f, transform.forward.z), resultingVector);
+        tempVector.y = 0.25f;
+        return tempVector;
     }
     private Vector3 BoidAlignment()
     {
