@@ -478,7 +478,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ratPrefab: {fileID: 1172804712985602807, guid: 34fada42577af1444b9bc416a9747ffe, type: 3}
   numberOfRats: 7
-  radius: 2
+  radius: 4
   ratList: []
 --- !u!4 &1670719319
 Transform:
