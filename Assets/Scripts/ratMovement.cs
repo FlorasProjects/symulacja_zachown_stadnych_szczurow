@@ -8,16 +8,12 @@ using TMPro;
 public class RatMovement : MonoBehaviour
 {
     public float checkRadius;
-    private Vector3 ratRotation;
     [Range(0.1f, 1f)]
     public float rotationSpeed;
     [Range(1f, 10f)]
     public float movementSpeed;
     ArrayList nearRats;
 
-    private float angleOffset = 50f;
-
-    Vector3 lookVector = Vector3.zero;
     void Start()
     {
         nearRats = new ArrayList();
@@ -29,7 +25,8 @@ public class RatMovement : MonoBehaviour
        
         if (nearRats.Count > 0)
          {
-            RotateRat(BoidSeparation());
+            RotateRat(BoidAlignment() + BoidSeparation());
+            Debug.Log(BoidAlignment() + BoidSeparation());
             transform.position += movementSpeed * Time.deltaTime * transform.forward;
          }
     }
@@ -68,11 +65,15 @@ public class RatMovement : MonoBehaviour
         Vector3 tempVector = Vector3.zero;
         foreach(Transform rat in nearRats)
         {
-            tempVector += rat.position;
+            tempVector += rat.transform.forward;
         }
 
         resultingVector.y = 0.25f;
         return resultingVector;
+    }
+    public void BoidCohesion()
+    {
+
     }
     public void RotateRat(Vector3 targetPosition)
     {
