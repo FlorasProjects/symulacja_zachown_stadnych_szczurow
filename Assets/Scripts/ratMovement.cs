@@ -1,20 +1,21 @@
 using System;
 using System.Collections;
-using System.Threading;
 using UnityEngine;
-using static UnityEngine.GraphicsBuffer;
+using System.Collections.Generic;
+using TMPro;
 
 
 public class RatMovement : MonoBehaviour
 {
-    public float checkFrequency;
     public float checkRadius;
-    public Vector3 ratRotation;
+    private Vector3 ratRotation;
     [Range(0.1f, 1f)]
     public float rotationSpeed;
-    [Range(1f, 5f)]
+    [Range(1f, 10f)]
     public float movementSpeed;
     ArrayList nearRats;
+
+    private float angleOffset = 50f;
 
     Vector3 lookVector = Vector3.zero;
     void Start()
@@ -28,17 +29,9 @@ public class RatMovement : MonoBehaviour
        
         if (nearRats.Count > 0)
          {
-            lookVector = BoidSeparation();
-            Debug.Log(lookVector);
-            //transform.LookAt(lookVector);
-            Vector3 relativePos = lookVector - transform.position;
-            Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
-            transform.rotation = Quaternion.Slerp(Quaternion.identity,rotation,rotationSpeed); ;
+            RotateRat(BoidSeparation());
             transform.position += movementSpeed * Time.deltaTime * transform.forward;
          }
-        //Debug.Log(BoidAlignment());
-        // transform.rotation *= Quaternion.Slerp(Quaternion.identity,  Quaternion.Euler(BoidSeparation().normalized), rotationSpeed * Time.deltaTime);
-        //Quaternion.Euler(0f, BoidSeparation(), 0f);
     }
 
     private void UpdateNearbyRats(ArrayList nearRats)
@@ -54,14 +47,6 @@ public class RatMovement : MonoBehaviour
             {
                 if (rat.transform != this.transform)
                 {
-                    /* for(int j = 0; j < checkRadius - Mathf.Abs(rat.position.x - transform.position.x); j++)
-                     {
-                         nearRats.Add(rat);
-                     }
-                     for (int k = 0; k < checkRadius - Mathf.Abs(rat.position.z - transform.position.z); k++)
-                     {
-                         nearRats.Add(rat);
-                     }*/
                     nearRats.Add(rat);
                 }
             }
@@ -86,7 +71,18 @@ public class RatMovement : MonoBehaviour
             tempVector += rat.position;
         }
 
-        resultingVector.y = 0f;
+        resultingVector.y = 0.25f;
         return resultingVector;
+    }
+    public void RotateRat(Vector3 targetPosition)
+    {
+        Vector3 directionToTarget = targetPosition - transform.position;
+        if (directionToTarget == Vector3.zero)
+        {
+            return;
+        }
+        Quaternion targetRotation = Quaternion.LookRotation(directionToTarget);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, rotationSpeed * Time.deltaTime );
     }
 }

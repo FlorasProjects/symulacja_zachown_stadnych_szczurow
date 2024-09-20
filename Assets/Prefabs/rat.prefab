@@ -119,9 +119,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4a5da093b44c9f54fa69e77cc8277657, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  checkFrequency: 1
   checkRadius: 5
-  ratRotation: {x: 0, y: 0, z: 0}
   rotationSpeed: 1
   movementSpeed: 1
 --- !u!54 &6493031343775181897
