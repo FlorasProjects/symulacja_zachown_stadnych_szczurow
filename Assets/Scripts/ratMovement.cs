@@ -13,6 +13,7 @@ public class RatMovement : MonoBehaviour
     [Range(1f, 10f)]
     public float movementSpeed;
     ArrayList nearRats;
+    float[] boidWeights = { 2f, 2f, 1f };
 
     void Start()
     {
@@ -25,8 +26,8 @@ public class RatMovement : MonoBehaviour
        
         if (nearRats.Count > 0)
          {
-            RotateRat(BoidAlignment() + BoidSeparation());
-            Debug.Log(BoidAlignment() + BoidSeparation());
+            RotateRat(BoidSeparation() + BoidAlignment() + BoidCohesion());
+            //Debug.Log();
             transform.position += movementSpeed * Time.deltaTime * transform.forward;
          }
     }
@@ -57,23 +58,27 @@ public class RatMovement : MonoBehaviour
             result += transform.position - rat.position;
         }
         result.y = 0.25f;
-        return result;
+        return result * boidWeights[0];
     }
     private Vector3 BoidAlignment()
     {
-        Vector3 resultingVector = transform.forward;
-        Vector3 tempVector = Vector3.zero;
-        foreach(Transform rat in nearRats)
+        Vector3 result = transform.forward + transform.position;
+        foreach (Transform rat in nearRats)
         {
-            tempVector += rat.transform.forward;
+            result += rat.forward / nearRats.Count;
         }
-
-        resultingVector.y = 0.25f;
-        return resultingVector;
+        result.y = 0.25f;
+        return result * boidWeights[1];
     }
-    public void BoidCohesion()
+    public Vector3 BoidCohesion()
     {
-
+        Vector3 result = transform.position;
+        foreach (Transform rat in nearRats)
+        {
+            result += rat.position - transform.position;
+        }
+        result.y = 0.25f;
+        return result * boidWeights[2];
     }
     public void RotateRat(Vector3 targetPosition)
     {
