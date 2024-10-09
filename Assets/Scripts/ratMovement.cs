@@ -1,9 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using System.Collections.Generic;
-using TMPro;
-
+using UnityEngine.AI;
 
 public class RatMovement : MonoBehaviour
 {
@@ -13,8 +11,9 @@ public class RatMovement : MonoBehaviour
     [Range(1f, 10f)]
     public float movementSpeed;
     ArrayList nearRats;
-    float[] boidWeights = { 2f, 2f, 1f };
+    float[] boidWeights = { 0.5f, 0.1f, 0.4f };
 
+    public NavMeshAgent agent;
     void Start()
     {
         nearRats = new ArrayList();
@@ -26,10 +25,15 @@ public class RatMovement : MonoBehaviour
        
         if (nearRats.Count > 0)
          {
-            RotateRat(BoidSeparation() + BoidAlignment() + BoidCohesion());
+            // RotateRat(BoidSeparation() + BoidAlignment() + BoidCohesion());
             //Debug.Log();
-            transform.position += movementSpeed * Time.deltaTime * transform.forward;
+            //transform.position += movementSpeed * Time.deltaTime * transform.forward;
+            AIMove(new Vector3(1, 1, 10) + BoidSeparation() + BoidAlignment() + BoidCohesion());
          }
+    }
+    private void AIMove(Vector3 destination)
+    {
+        agent.SetDestination(destination);
     }
 
     private void UpdateNearbyRats(ArrayList nearRats)
