@@ -11,8 +11,10 @@ public class RatMovement : MonoBehaviour
     [Range(1f, 10f)]
     public float movementSpeed;
     ArrayList nearRats;
-    float[] boidWeights = { 0.5f, 0.1f, 0.4f };
-
+    float[] boidWeights = { 0.5f, 0.05f, 0.4f };
+    private Vector3 targetPos = new Vector3(4,0.33f,22);
+    private Vector3 proxWeightDisable = new Vector3(3, 0, 3);
+    private Vector3 currentPos = Vector3.zero;
     public NavMeshAgent agent;
     void Start()
     {
@@ -28,7 +30,17 @@ public class RatMovement : MonoBehaviour
             // RotateRat(BoidSeparation() + BoidAlignment() + BoidCohesion());
             //Debug.Log();
             //transform.position += movementSpeed * Time.deltaTime * transform.forward;
-            AIMove(new Vector3(1, 1, 10) + BoidSeparation() + BoidAlignment() + BoidCohesion());
+            //Vector3.Scale(new Vector3(1, 2, 3), new Vector3(2, 3, 4))
+            AIMove(targetPos + BoidSeparation() + BoidAlignment() + BoidCohesion());
+            currentPos = targetPos - transform.position;
+            if(currentPos.x <= proxWeightDisable.x && currentPos.y <= proxWeightDisable.y)
+            {
+                boidWeights[0] = boidWeights[1] = boidWeights[2] = 0;
+            }
+            if(boidWeights[0] != 0)
+            {
+                Debug.Log(currentPos);
+            }
          }
     }
     private void AIMove(Vector3 destination)

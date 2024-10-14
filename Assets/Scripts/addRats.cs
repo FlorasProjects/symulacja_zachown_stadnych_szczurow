@@ -6,7 +6,7 @@ public class AddRats : MonoBehaviour
 {
     public GameObject ratPrefab;
     public int numberOfRats;
-    public float radius = 6f;
+    public float radius = -10f;
     public List<GameObject> ratList;
 
     void Start()
